@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4  # Updated to v4
+        uses: actions/checkout@v4  # Correct syntax
 
       - name: Zip the plugin
         run: |
@@ -19,7 +19,7 @@ jobs:
           zip -r release/qgis_plugin_gpq_downloader.zip * -x ".git*" ".github*" "release*"
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4  # Updated to v4
+        uses: actions/upload-artifact@v4  # Correct syntax
         with:
           name: qgis-plugin-release
           path: release/qgis_plugin_gpq_downloader.zip
@@ -30,7 +30,18 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4  # Updated to v4
+        uses: actions/checkout@v4  # Correct syntax
 
       - name: Download zipped plugin
-        uses: actions/downl
+        uses: actions/download-artifact@v4  # Correct syntax
+        with:
+          name: qgis-plugin-release
+          path: .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1  # Correct syntax
+        with:
+          files: qgis_plugin_gpq_downloader.zip
+          body: "Automated release of QGIS plugin for Overture Maps."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
