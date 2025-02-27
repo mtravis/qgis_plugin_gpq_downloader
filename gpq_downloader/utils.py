@@ -82,11 +82,11 @@ class Worker(QObject):
                             logger.log(bbox_info)
                             return bbox_info
                 except Exception as e:
-                    logger.log(f"\nError parsing geo metadata: {str(e)}")
-                    logger.log(f"Exception type: {type(e)}")
+                    logger.log(f"\nError parsing geo metadata: {str(e)}", 2)
+                    logger.log(f"Exception type: {type(e)}", 2)
                     import traceback
 
-                    logger.log(traceback.format_exc())
+                    logger.log(traceback.format_exc(), 2)
                     continue
         return None
 
@@ -324,7 +324,7 @@ class Worker(QObject):
             return 0
 
         except Exception as e:
-            logger.log(f"Error estimating file size: {str(e)}")
+            logger.log(f"Error estimating file size: {str(e)}", 2)
             return 0
 
     def process_schema_columns(self, schema_result):
@@ -406,8 +406,8 @@ class ValidationWorker(QObject):
                         return bbox_col
 
                 except Exception as e:
-                    logger.log(f"\nError parsing geo metadata: {str(e)}")
-                    logger.log(f"Exception type: {type(e)}")
+                    logger.log(f"\nError parsing geo metadata: {str(e)}", 2)
+                    logger.log(f"Exception type: {type(e)}", 2)
                     import traceback
 
                     logger.log(traceback.format_exc())
