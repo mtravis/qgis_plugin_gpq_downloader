@@ -135,7 +135,7 @@ class Worker(QObject):
                         
                         # Handle STRUCT and MAP columns with TO_JSON
                         if 'STRUCT' in col_type.upper() or 'MAP' in col_type.upper():
-                            columns.append(f"CAST(TO_JSON({quoted_col_name})) AS {quoted_col_name}")
+                            columns.append(f"TO_JSON({quoted_col_name}) AS {quoted_col_name}")
                         
                         # Handle array types like VARCHAR[] by converting them to strings
                         elif '[]' in col_type:  
