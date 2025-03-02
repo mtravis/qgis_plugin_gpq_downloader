@@ -121,34 +121,33 @@ class Worker(QObject):
 
                 # Start building the SELECT query
                 select_query = "SELECT *"
-                if not self.output_file.endswith(".parquet"):
-                    # Construct the SELECT clause with array conversion to strings and dynamic struct handling
-                    columns = []
-                    for row in schema_result:
-                        col_name = row[0]
-                        col_type = row[1]
+                # Construct the SELECT clause with array conversion to strings and dynamic struct handling
+                columns = []
+                for row in schema_result:
+                    col_name = row[0]
+                    col_type = row[1]
 
-                        # Quote the column name to handle special characters
-                        quoted_col_name = f'"{col_name}"'
-                        
-                        # Handle STRUCT and MAP columns with TO_JSON
-                        if 'STRUCT' in col_type.upper() or 'MAP' in col_type.upper():
-                            columns.append(f"TO_JSON({quoted_col_name}) AS {quoted_col_name}")
-                        
-                        # Handle array types like VARCHAR[] by converting them to strings
-                        elif '[]' in col_type:  
-                            columns.append(f"array_to_string({quoted_col_name}, ', ') AS {quoted_col_name}")
-                        
-                        # Handle UTINYINT as INTEGER
-                        elif col_type.upper() == 'UTINYINT':
-                            columns.append(f"CAST({quoted_col_name} AS INTEGER) AS {quoted_col_name}")
-                        
-                        # Otherwise, use the column as-is
-                        else:
-                            columns.append(quoted_col_name)
+                    # Quote the column name to handle special characters
+                    quoted_col_name = f'"{col_name}"'
+                    
+                    # Handle STRUCT and MAP columns with TO_JSON
+                    if 'STRUCT' in col_type.upper() or 'MAP' in col_type.upper():
+                        columns.append(f"CAST(TO_JSON({quoted_col_name}) AS TEXT) AS {quoted_col_name}")
+                    
+                    # Handle array types like VARCHAR[] by converting them to strings
+                    elif '[]' in col_type:  
+                        columns.append(f"array_to_string({quoted_col_name}, ', ') AS {quoted_col_name}")
+                    
+                    # Handle UTINYINT as INTEGER
+                    elif col_type.upper() == 'UTINYINT':
+                        columns.append(f"CAST({quoted_col_name} AS INTEGER) AS {quoted_col_name}")
+                    
+                    # Otherwise, use the column as-is
+                    else:
+                        columns.append(quoted_col_name)
 
-                    # Final query without Overture-specific check
-                    select_query = f'SELECT {", ".join(columns)}'
+                # Final query without Overture-specific check
+                select_query = f'SELECT {", ".join(columns)}'
 
                 # Construct WHERE clause based on bbox information
                 bbox_column = self.validation_results.get('bbox_column')
@@ -211,9 +210,6 @@ class Worker(QObject):
                             return
 
                     copy_query = f"COPY {table_name} TO '{self.output_file}'"
-
-                     # Initialize format_options with a default value
-                    format_options = ""
 
                     if file_extension == "parquet":
                         format_options = "(FORMAT 'parquet', COMPRESSION 'ZSTD');"
