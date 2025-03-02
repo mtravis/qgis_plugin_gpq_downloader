@@ -16,13 +16,13 @@ jobs:
       - name: Zip the plugin
         run: |
           mkdir -p release
-          zip -r release/qgis_plugin_gpq_downloader.zip * -x ".git*" ".github*" "release*"
+          zip -r gpq_downloader.zip gpq_downloader/ -x "*.DS_Store" "*.gitignore" "*/.git/*"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4  # Correct syntax
         with:
           name: qgis-plugin-release
-          path: release/qgis_plugin_gpq_downloader.zip
+          path: release/gpq_downloader.zip
 
   release:
     needs: build
