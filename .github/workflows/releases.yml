@@ -18,22 +18,15 @@ jobs:
           chmod +x make_release.sh
           ./make_release.sh ${GITHUB_REF#refs/tags/}
 
-      - name: List files in current directory (before upload)
+      - name: Debug: List files before upload
         run: ls -lh
-
-
-      # - name: Upload artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: qgis-plugin-release
-      #     path: gpq_downloader_${GITHUB_REF#refs/tags/}.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: qgis-plugin-release
-          path: "*.zip"  # Match any ZIP file in the current directory
-        
+          path: "*.zip"  # Upload any ZIP file found
+
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -48,14 +41,14 @@ jobs:
           name: qgis-plugin-release
           path: .
 
-      - name: List files in current directory
-        run: ls -l
+      - name: Debug: List files after download
+        run: ls -lh
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: gpq_downloader_${GITHUB_REF#refs/tags/}.zip
+          files: "*.zip"  # Upload any ZIP file
           body: "Automated release of QGIS plugin for Overture Maps."
-          draft: false  # Ensure the release is published
+          draft: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
