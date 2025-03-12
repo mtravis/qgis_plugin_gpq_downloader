@@ -18,9 +18,6 @@ jobs:
           chmod +x make_release.sh
           ./make_release.sh ${GITHUB_REF#refs/tags/}
 
-      - name: Debug: List files before upload
-        run: ls -lh
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -42,7 +39,7 @@ jobs:
           name: qgis-plugin-release
           path: .
   
-      - name: Debug: List files after download
+      - name: List files after download
         run: ls -lh
   
       - name: Create GitHub Release
@@ -51,6 +48,6 @@ jobs:
           files: "*.zip"  # Automatically select the correct zip file
           body: "Automated release of QGIS plugin for Overture Maps."
           draft: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
