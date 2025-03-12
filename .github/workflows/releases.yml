@@ -18,30 +18,32 @@ jobs:
           chmod +x make_release.sh
           ./make_release.sh ${GITHUB_REF#refs/tags/}
 
+      - name: List files before upload
+        run: ls -lh
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: qgis-plugin-release
           path: "*.zip"  # Upload any ZIP file found
 
-
   release:
     needs: build
     runs-on: ubuntu-latest
-  
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-  
+
       - name: Download zipped plugin
         uses: actions/download-artifact@v4
         with:
           name: qgis-plugin-release
           path: .
-  
+
       - name: List files after download
         run: ls -lh
-  
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
@@ -50,4 +52,3 @@ jobs:
           draft: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
