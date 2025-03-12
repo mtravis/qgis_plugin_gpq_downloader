@@ -27,28 +27,30 @@ jobs:
           name: qgis-plugin-release
           path: "*.zip"  # Upload any ZIP file found
 
+
   release:
     needs: build
     runs-on: ubuntu-latest
-
+  
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+  
       - name: Download zipped plugin
         uses: actions/download-artifact@v4
         with:
           name: qgis-plugin-release
           path: .
-
+  
       - name: Debug: List files after download
         run: ls -lh
-
+  
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: "*.zip"  # Upload any ZIP file
+          files: "*.zip"  # Automatically select the correct zip file
           body: "Automated release of QGIS plugin for Overture Maps."
           draft: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
