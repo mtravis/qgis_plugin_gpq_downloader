@@ -18,6 +18,10 @@ jobs:
           chmod +x make_release.sh
           ./make_release.sh ${GITHUB_REF#refs/tags/}
 
+      - name: List files in current directory (before upload)
+        run: ls -lh
+
+
       # - name: Upload artifact
       #   uses: actions/upload-artifact@v4
       #   with:
