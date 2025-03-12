@@ -18,15 +18,18 @@ jobs:
           chmod +x make_release.sh
           ./make_release.sh ${GITHUB_REF#refs/tags/}
 
-      - name: List files in current directory
-        run: ls -l
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: qgis-plugin-release
           path: gpq_downloader_${GITHUB_REF#refs/tags/}.zip
 
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: qgis-plugin-release
+      #     path: "*.zip"  # Match any ZIP file in the current directory
+        
   release:
     needs: build
     runs-on: ubuntu-latest
