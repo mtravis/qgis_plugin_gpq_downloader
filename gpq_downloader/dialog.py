@@ -593,6 +593,7 @@ class DataSourceDialog(QDialog):
                     layer.selectionChanged.disconnect(self.on_selection_changed)
                 except:
                     pass
+                layer.removeSelection()
 
         # Restore the default map tool
         if self.iface:
@@ -1317,6 +1318,7 @@ class DataSourceDialog(QDialog):
                     layer.selectionChanged.disconnect(self.on_selection_changed)
                 except:
                     pass
+                layer.removeSelection()
 
         super().accept()
 
@@ -1339,6 +1341,7 @@ class DataSourceDialog(QDialog):
                     layer.selectionChanged.disconnect(self.on_selection_changed)
                 except:
                     pass
+                layer.removeSelection()
 
         # Restore the default map tool
         if self.iface:
