@@ -377,6 +377,9 @@ class DataSourceDialog(QDialog):
                     layer.selectionChanged.disconnect(self.on_selection_changed)
                 except TypeError:
                     pass
+                # The AOI has already been copied into dialog state; clear the
+                # transient layer selection so it does not remain highlighted.
+                layer.removeSelection()
 
             # Restore pan tool
             self.iface.actionPan().trigger()
