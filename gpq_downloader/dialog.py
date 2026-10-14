@@ -331,7 +331,7 @@ class DataSourceDialog(QDialog):
             self.dialog = dialog
 
         def eventFilter(self, obj, event):
-            if event.type() != QEvent.KeyPress:
+            if event.type() != QEvent.Type.KeyPress:
                 return False
 
             in_select_mode = getattr(self.dialog, "_in_feature_select_mode", False)
@@ -340,13 +340,13 @@ class DataSourceDialog(QDialog):
             if not in_select_mode and not in_draw_mode:
                 return False
 
-            if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
+            if event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:
                 if in_select_mode:
                     self.dialog.finish_feature_selection()
                 elif in_draw_mode:
                     self.dialog.finish_polygon_draw()
                 return True
-            elif event.key() == Qt.Key_Escape:
+            elif event.key() == Qt.Key.Key_Escape:
                 if in_select_mode:
                     self.dialog.cancel_feature_selection()
                 elif in_draw_mode:
@@ -916,11 +916,11 @@ class DataSourceDialog(QDialog):
             else:
                 # If QGIS theme icon not available, use standard QStyle icon
                 from qgis.PyQt.QtWidgets import QStyle
-                self.select_button.setIcon(self.style().standardIcon(QStyle.SP_FileDialogListView))
+                self.select_button.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogListView))
         except:
             # If there's any error, use a generic icon
             from qgis.PyQt.QtWidgets import QStyle
-            self.select_button.setIcon(self.style().standardIcon(QStyle.SP_FileDialogListView))
+            self.select_button.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogListView))
         
         # Connect select button to selection tool
         self.select_button.clicked.connect(self.start_feature_selection)
@@ -948,7 +948,7 @@ class DataSourceDialog(QDialog):
         else:
             # Fallback to a standard icon if the custom one isn't available
             from qgis.PyQt.QtWidgets import QStyle
-            self.clear_button.setIcon(self.style().standardIcon(QStyle.SP_DialogResetButton))
+            self.clear_button.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_DialogResetButton))
         
         # Connect clear button to clear function
         self.clear_button.clicked.connect(self.clear_extent)
