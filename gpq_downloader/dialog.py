@@ -604,7 +604,7 @@ class DataSourceDialog(QDialog):
             return [self.url_input.text().strip()]
         elif self.overture_radio.isChecked():
             latest_release = requests.get(
-                "https://labs.overturemaps.org/data/releases.json"
+                "https://stac.overturemaps.org/catalog.json", timeout=30
             ).json()["latest"]
 
             for theme, checkbox in self.overture_checkboxes.items():
